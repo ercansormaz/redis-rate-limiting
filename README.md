@@ -159,6 +159,12 @@ mvn spring-boot:run
 
 ---
 
+## 📚 Further Reading
+You can read a detailed explanation of this project in the blog post here:  
+👉 [Read the Blog Post](https://ercan.dev/blog/notes/spring-boot-rate-limiting-with-redis)
+
+---
+
 ## 🤝 Contributing
 Contributions are welcome! Feel free to fork the repo, submit pull requests or open issues.
 
