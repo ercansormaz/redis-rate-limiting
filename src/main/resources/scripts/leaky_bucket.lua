@@ -1,27 +1,37 @@
-local value = redis.call('GET', KEYS[1])
-local now = tonumber(ARGV[1])
+local key = KEYS[1]
+local nowMillis = tonumber(ARGV[1])
 local capacity = tonumber(ARGV[2])
 local leakRate = tonumber(ARGV[3])
-local leakPeriod = tonumber(ARGV[4])
+local leakPeriodMillis = tonumber(ARGV[4])
+local expireInMillis = tonumber(ARGV[5])
+
 local water, lastLeak
+
+-- get current water level and last leak time
+local value = redis.call('GET', key)
+
+-- if not exists set initial water level and last leak time
 if not value then
-  water = 0; lastLeak = now
+  water = 0; lastLeak = nowMillis
 else
   local parts = {} for part in string.gmatch(value, '[^:]+') do table.insert(parts, part) end
   water = tonumber(parts[1])
   lastLeak = tonumber(parts[2])
-  local intervals = math.floor((now - lastLeak) / leakPeriod)
+
+  -- calculate leak interval count
+  local intervals = math.floor((nowMillis - lastLeak) / leakPeriodMillis)
   if intervals > 0 then
+    -- calculate new water level and last leak time
     water = math.max(0, water - (intervals * leakRate))
-    lastLeak = lastLeak + (intervals * leakPeriod)
+    lastLeak = lastLeak + (intervals * leakPeriodMillis)
   end
 end
-local expireDuration = tonumber(ARGV[5])
+
 if water < capacity then
   water = water + 1
-  redis.call('SET', KEYS[1], water .. ':' .. lastLeak, 'PX', expireDuration)
+  redis.call('SET', key, water .. ':' .. lastLeak, 'PX', expireInMillis)
   return 1
 else
-  redis.call('SET', KEYS[1], water .. ':' .. lastLeak, 'PX', expireDuration)
+  redis.call('SET', key, water .. ':' .. lastLeak, 'PX', expireInMillis)
   return 0
 end

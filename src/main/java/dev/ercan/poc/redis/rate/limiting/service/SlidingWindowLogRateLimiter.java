@@ -27,15 +27,11 @@ public class SlidingWindowLogRateLimiter {
       return false;
     }
 
-    long now = Instant.now().toEpochMilli();
-    long expireIn = windowDuration.toMillis();
-
     byte[][] keysAndArgs = {
         String.format(WINDOW_KEY, id, key).getBytes(),
-        Long.toString(now).getBytes(),
-        Long.toString(now - expireIn).getBytes(),
+        Long.toString(Instant.now().toEpochMilli()).getBytes(),
+        Long.toString(windowDuration.toMillis()).getBytes(),
         Long.toString(limit).getBytes(),
-        Long.toString(expireIn).getBytes(),
         UUID.randomUUID().toString().getBytes()
     };
 

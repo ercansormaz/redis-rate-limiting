@@ -29,9 +29,9 @@ public class SlidingWindowCounterRateLimiter {
     byte[][] keysAndArgs = {
         String.format(WINDOW_KEY, id, key, currentSubWindowNumber).getBytes(),
         String.format(WINDOW_KEY, id, key, previousSubWindowNumber).getBytes(),
+        Long.toString(now).getBytes(),
         Long.toString(windowDuration.toMillis()).getBytes(),
         Long.toString(subWindowDuration.toMillis()).getBytes(),
-        Long.toString(now).getBytes(),
         Long.toString(limit).getBytes()
     };
 
