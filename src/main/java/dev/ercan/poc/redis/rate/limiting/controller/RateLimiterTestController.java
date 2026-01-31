@@ -43,7 +43,7 @@ public class RateLimiterTestController {
   }
 
   @GetMapping("/sliding-window-counter")
-  @SlidingWindowCounterRateLimit(id = "testController", key = "#request.remoteAddr", limit = 3, windowDuration = "10s", subWindowDuration = "1s")
+  @SlidingWindowCounterRateLimit(id = "testController", key = "#request.remoteAddr", limit = 3, windowDuration = "60s", subWindowDuration = "10s")
   public ResponseEntity<?> testSlidingWindowCounterLimiter(HttpServletRequest request) {
     return ResponseEntity.status(HttpStatus.ACCEPTED).build();
   }

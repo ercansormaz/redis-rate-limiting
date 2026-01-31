@@ -43,21 +43,4 @@ public class FixedWindowRateLimiter {
     return count <= limit;
   }
 
-  /*
-  public boolean tryConsume(String id, String key, long limit, Duration windowDuration) {
-    String windowKey = String.format(WINDOW_KEY_PREFIX, id, key);
-
-    Long count = redisTemplate.opsForValue().increment(windowKey);
-
-    if (count == null) {
-      return false;
-    }
-
-    if (count == 1) {
-      redisTemplate.expire(windowKey, windowDuration);
-    }
-
-    return count <= limit;
-  }
-  */
 }

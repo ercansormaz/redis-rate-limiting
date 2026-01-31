@@ -50,42 +50,4 @@ public class LeakyBucketRateLimiter {
     return result == 1;
   }
 
-  /*
-  public boolean tryConsume(String id, String key, long capacity, long leakRate, Duration leakPeriod) {
-    String waterKey = String.format(BUCKET_KEY, id, key);
-
-    String value = redisTemplate.opsForValue().get(waterKey);
-
-    long now = Instant.now().toEpochMilli();
-
-    long water, lastLeak;
-    if (!StringUtils.hasLength(value)) {
-      water = 0L;
-      lastLeak = now;
-    } else {
-      String[] parts = value.split(":");
-      water = Long.parseLong(parts[0]);
-      lastLeak = Long.parseLong(parts[1]);
-
-      long intervals = (now - lastLeak) / leakPeriod.toMillis();
-
-      if (intervals > 0) {
-        water = Math.max(0, water - (intervals * leakRate));
-        lastLeak = lastLeak + (intervals * leakPeriod.toMillis());
-      }
-    }
-
-    long expireIn = leakPeriod.multipliedBy(capacity / leakRate).toMillis();
-
-    if (water < capacity) {
-      water += 1;
-      redisTemplate.opsForValue().set(waterKey, water + ":" + lastLeak, expireIn, TimeUnit.MILLISECONDS);
-      return true;
-    }
-
-    redisTemplate.opsForValue().set(waterKey, water + ":" + lastLeak, expireIn, TimeUnit.MILLISECONDS);
-    return false;
-  }
-  */
-
 }

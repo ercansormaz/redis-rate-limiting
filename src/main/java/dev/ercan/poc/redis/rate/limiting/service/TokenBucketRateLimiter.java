@@ -56,43 +56,4 @@ public class TokenBucketRateLimiter {
     return result == 1;
   }
 
-  /*
-  public boolean tryConsume(String id, String key, long capacity, long refillRate,
-      Duration refillPeriod) {
-    String bucketKey = String.format(BUCKET_KEY, id, key);
-
-    String value = redisTemplate.opsForValue().get(bucketKey);
-
-    long now = Instant.now().toEpochMilli();
-
-    long tokens, lastRefill;
-    if (!StringUtils.hasLength(value)) {
-      tokens = capacity;
-      lastRefill = now;
-    } else {
-      String[] parts = value.split(":");
-      tokens = Long.parseLong(parts[0]);
-      lastRefill = Long.parseLong(parts[1]);
-
-      long intervals = (now - lastRefill) / refillPeriod.toMillis();
-
-      if (intervals > 0) {
-        tokens = Math.min(capacity, tokens + (intervals * refillRate));
-        lastRefill = lastRefill + (intervals * refillPeriod.toMillis());
-      }
-    }
-
-    long expireIn = refillPeriod.multipliedBy(capacity / refillRate).toMillis();
-
-    if (tokens > 0) {
-      tokens -= 1;
-      redisTemplate.opsForValue().set(bucketKey, tokens + ":" + lastRefill, expireIn, TimeUnit.MILLISECONDS);
-      return true;
-    }
-
-    redisTemplate.opsForValue().set(bucketKey, tokens + ":" + lastRefill, expireIn, TimeUnit.MILLISECONDS);
-    return false;
-  }
-  */
-
 }

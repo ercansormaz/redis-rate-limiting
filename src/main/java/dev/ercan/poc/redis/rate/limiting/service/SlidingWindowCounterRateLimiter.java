@@ -52,42 +52,4 @@ public class SlidingWindowCounterRateLimiter {
     return result == 1;
   }
 
-  /*
-  public boolean tryConsume(String id, String key, long limit, Duration windowDuration, Duration subWindowDuration) {
-    long now = Instant.now().toEpochMilli();
-    long currentSubWindow = now / subWindowDuration.toMillis();
-    long previousSubWindow = currentSubWindow - 1;
-
-    String currentSubWindowKey = String.format(WINDOW_KEY, id, key, currentSubWindow);
-    String previousSubWindowKey = String.format(WINDOW_KEY, id, key, previousSubWindow);
-
-    String currentCountStr = redisTemplate.opsForValue().get(currentSubWindowKey);
-    long currentCount = currentCountStr != null ? Long.parseLong(currentCountStr) : 0;
-
-    String prevCountStr = redisTemplate.opsForValue().get(previousSubWindowKey);
-    long prevCount = prevCountStr != null ? Long.parseLong(prevCountStr) : 0;
-
-    double elapsedInCurrentWindow = now % subWindowDuration.toMillis();
-    double weight = (subWindowDuration.toMillis() - elapsedInCurrentWindow) / subWindowDuration.toMillis();
-
-    double total = currentCount + (prevCount * weight);
-
-    if (total < limit) {
-      Long count = redisTemplate.opsForValue().increment(currentSubWindowKey);
-
-      if (count == null) {
-        return false;
-      }
-
-      if (count == 1) {
-        redisTemplate.expire(currentSubWindowKey, windowDuration);
-      }
-
-      return true;
-    }
-
-    return false;
-  }
-  */
-
 }

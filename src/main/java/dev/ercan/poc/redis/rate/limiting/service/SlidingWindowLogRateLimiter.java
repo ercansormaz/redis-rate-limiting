@@ -52,28 +52,4 @@ public class SlidingWindowLogRateLimiter {
     return result == 1;
   }
 
-  /*
-  public boolean tryConsume(String id, String key, long limit, Duration windowDuration) {
-    String windowKey = String.format(WINDOW_KEY, id, key);
-
-    long now = Instant.now().getEpochSecond();
-    long windowSeconds = windowDuration.getSeconds();
-
-    // remove timestamps outside window
-    redisTemplate.opsForZSet().removeRangeByScore(windowKey, 0, now - windowSeconds);
-
-    // get count within window
-    Long count = redisTemplate.opsForZSet().count(windowKey, (now - windowSeconds) + 1, now);
-
-    // Add current timestamp to sorted set if request allowed
-    if (count != null && count < limit) {
-      redisTemplate.opsForZSet().add(windowKey, UUID.randomUUID().toString(), now);
-      redisTemplate.expire(windowKey, windowDuration);
-      return true;
-    }
-
-    return false;
-  }
-  */
-
 }
